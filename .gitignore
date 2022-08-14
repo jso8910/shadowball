@@ -1,4 +1,5 @@
 .env
 creds.json
 venv/
-*.cpython
+*.pyc
+__pycache__/
