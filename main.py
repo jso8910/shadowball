@@ -1,6 +1,5 @@
 from dotenv import dotenv_values
 config = dotenv_values(".env")
-
 import discord
 from discord import app_commands
 from discord.ui import Select, View
