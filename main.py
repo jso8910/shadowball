@@ -23,14 +23,14 @@ sheet = ShadowballSheet()
 tree = app_commands.CommandTree(client)
 
 @tree.command(name = "add_game", description = "Add a new game", guild = discord.Object(id = config['GUILD_ID']))
-@app_commands.checks.has_role("S8 General Manager")
+@app_commands.checks.has_role("Scouter")
 async def add_game(interaction: discord.Interaction, home_team: str, away_team: str, date: str):
     await interaction.response.defer()
     sheet.new_game(away_team, home_team, date)
     await interaction.followup.send(f"Created a new game! {away_team} v {home_team} {date}", ephemeral=True)
 
 @tree.command(name = "set_game", description = "Set the current game", guild = discord.Object(id = config['GUILD_ID']))
-@app_commands.checks.has_role("S8 General Manager")
+@app_commands.checks.has_role("Scouter")
 async def set_game(interaction: discord.Interaction):
     await interaction.response.defer()
     games = sheet.get_games()
@@ -38,17 +38,17 @@ async def set_game(interaction: discord.Interaction):
         discord.SelectOption(label=title) for title in games
         ])
     async def callback(interaction):
-        if "S8 General Manager" in [y.name for y in interaction.user.roles]:
+        if "Scouter" in [y.name for y in interaction.user.roles]:
             await interaction.response.send_message(sheet.set_game(sel.values[0]) or f"Set game to: {sel.values[0]}")
         else:
-            await interaction.response.send_message("You aren't a general manager, stop trying to do this." + str(interaction.user.roles), ephemeral=True)
+            await interaction.response.send_message("You aren't a scouter, stop trying to do this." + str(interaction.user.roles), ephemeral=True)
     sel.callback = callback
     view = View()
     view.add_item(sel)
     await interaction.followup.send(f"Set the game that's going on now", view=view, ephemeral=True)
 
 @tree.command(name = "input_pitch", description = "Enter the pitch that was entered as well as the maximum difference that is a home run", guild = discord.Object(id = config['GUILD_ID']))
-@app_commands.checks.has_role("S8 General Manager")
+@app_commands.checks.has_role("Scouter")
 async def input_pitch(interaction: discord.Interaction, pitch: int, homer_diff: int):
     await interaction.response.defer()
     sheet.finish_pitch(pitch, homer_diff)
@@ -85,7 +85,7 @@ async def homerball_leaderboard(interaction: discord.Interaction, min_guesses: i
 async def error_handler(interaction, error):
     if isinstance(error, app_commands.MissingRole):
         print("We're here")
-        await interaction.response.send_message("Hey, you're not a GM! You can't do this!", ephemeral = True)
+        await interaction.response.send_message("Hey, you're not a scouter! You can't do this!", ephemeral = True)
     else:
         await interaction.followup.send(error, ephemeral = True)
 
