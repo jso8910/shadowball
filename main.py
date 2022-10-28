@@ -75,7 +75,7 @@ async def input_pitch(ctx: commands.context.Context, pitch: int, homer_diff: int
 
 @bot.command()
 async def guess(ctx: commands.context.Context, number: int):
-    updated_guess = sheet.make_guess(interaction.user, number)
+    updated_guess = sheet.make_guess(ctx.author.nick, number)
     await ctx.send(f"{'Updated' if updated_guess else 'Set'} your guess for this pitch as {number}.")
 
 # @tree.command(name = "leaderboard", description = "Get shadowball leaderboard. Remember to input the minimum number of guesses!", guild = discord.Object(id = config['GUILD_ID']))
