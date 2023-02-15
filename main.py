@@ -25,7 +25,7 @@ sheet = ShadowballSheet()
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='!',
-                   description="Ranger Shadowball bot", intents=intents)
+                   description="Diamondbacks Shadowball bot", intents=intents)
 # tree = app_commands.CommandTree(client)
 
 # @tree.command(name = "add_game", description = "Add a new game", guild = discord.Object(id = config['GUILD_ID']))
@@ -33,7 +33,7 @@ bot = commands.Bot(command_prefix='!',
 
 
 @bot.command()
-@commands.has_role('Scouter')
+@commands.has_role('Scoville Scouting')
 async def add_game(ctx: commands.context.Context, home_team: str, away_team: str, date: str):
     sheet.new_game(away_team, home_team, date)
     await ctx.send(f"Created a new game! {away_team} v {home_team} {date}")
@@ -43,7 +43,7 @@ async def add_game(ctx: commands.context.Context, home_team: str, away_team: str
 
 
 @bot.command()
-@commands.has_role('Scouter')
+@commands.has_role('Scoville Scouting')
 async def set_game(ctx: commands.context.Context):
     games = sheet.get_games()
     sel = Select(options=[
@@ -51,7 +51,7 @@ async def set_game(ctx: commands.context.Context):
     ])
 
     async def callback(interaction):
-        if "Scouter" in [y.name for y in interaction.user.roles]:
+        if "Scoville Scouting" in [y.name for y in interaction.user.roles]:
             await interaction.response.send_message(sheet.set_game(sel.values[0]) or f"Set game to: {sel.values[0]}")
         else:
             await interaction.response.send_message("You aren't a scouter, stop trying to do this.")
@@ -65,7 +65,7 @@ async def set_game(ctx: commands.context.Context):
 
 
 @bot.command()
-@commands.has_role('Scouter')
+@commands.has_role('Scoville Scouting')
 async def input_pitch(ctx: commands.context.Context, pitch: int, homer_diff: int):
     sheet.finish_pitch(pitch, homer_diff)
     await ctx.send(f"Updated the leaderboard with the most recent pitch and got things ready for the next pitch!")
